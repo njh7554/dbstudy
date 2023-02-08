@@ -17,6 +17,18 @@
         1) 생성 규칙 : "반드시" 부모 테이블을 먼저 생성한다.
         2) 삭제 규칙 : "반드시" 자식 테이블을 먼저 삭제한다.
 */
+
+/*
+    외래키 제약 조건의 옵션
+    1. ON DELETE CASCADE
+        1) 참조 중인 PARENT KEY가 삭제되면 해당 PARENT KEY를 가진 행 전체를 함께 삭제한다.
+        2) 예시) 회원 탈퇴 시 작성한 모든 게시글이 함께 삭제됩니다.
+                 게시글 삭제 시 해당 게시글에 달린 모든 댓글이 함께 삭제됩니다.
+    2. ON DELETE SET NULL
+        1) 참조 중인 PARENT KEY가 삭제되면 해당 PARENT KEY를 가진 칼럼 값만 NULL로 처리한다.
+        2) 예시) 어떤 상품을 제거하였으나 해당 상품의 주문 내역은 남아 있는 경우
+*/
+
 -- 테이블 삭제
  DROP TABLE ORDER_TBL;
  DROP TABLE PRODUCT_TBL;
@@ -28,7 +40,7 @@
     PROD_PRICE NUMBER,
     PROD_STOCK NUMBER,
     CONSTRAINT PK_PROD PRIMARY KEY(PROD_NO)
-);
+    );
 
 -- 주문 테이블 (자식 테이블)
  CREATE TABLE ORDER_TBL (
@@ -37,7 +49,7 @@
   PROD_NO    NUMBER,
   ORDER_DATE DATE,
   CONSTRAINT PK_ORDER PRIMARY KEY(ORDER_NO),
-  CONSTRAINT FK_ORDER_PROD FOREIGN KEY(PROD_NO) REFERENCES PRODUCT_TBL(PROD_NO)
+  CONSTRAINT FK_ORDER_PROD FOREIGN KEY(PROD_NO) REFERENCES PRODUCT_TBL(PROD_NO) ON DELETE CASCADE
 );
 
 
@@ -51,5 +63,6 @@
         3) DBA_CONSTRAINTS  
 */
 -- 테이블의 구조 확인하는 쿼리문 (설명)
---DESCRIBE ALL_CONSTRAINTS;
---SELECT * FROM ALL_CONSTRAINTS WHERE CONSTRAINT_NAME LIKE 'PK%';
+-- DESCRIBE ALL_CONSTRAINTS;
+-- SELECT * FROM ALL_CONSTRAINTS WHERE CONSTRAINT_NAME LIKE 'PK%';
+ 
